@@ -1,5 +1,6 @@
 # Object files
 *.o
+*.d
 
 # Libraries
 *.lib
@@ -15,3 +16,35 @@
 *.exe
 *.out
 *.app
+*.elf
+*.bin
+*.hex
+
+# Other
+*.lst
+*.lss
+*.map
+*.sym
+*.eep
+.deps
+*.log
+
+# VIM
+.*.swp
+
+# Eagle
+*.s#[0-9]
+*.b#[0-9]
+*.l#[0-9]
+
+# Gerber
+*.bot
+*.top
+*.dim
+*.dri
+*.excellon
+*.gpi
+*.msb
+*.mst
+*.slt
+
