@@ -3,9 +3,7 @@
 
 #include <chprintf.h>
 #include "status_led.h"
-
-#define DES_FSIZE ((uint16_t*)0x1FFFF7E0)
-#define U_ID      ((uint32_t*)0x1FFFF7E8)
+#include "shell_cmd.h"
 
 
 int main(void)
@@ -21,10 +19,7 @@ int main(void)
     halInit();
     chSysInit();
 
-    sdStart(&SD1, NULL);
-    chprintf((BaseSequentialStream*)&SD1, "USB2CAN " __DATE__ " " __TIME__ "\r\n");
-    chprintf((BaseSequentialStream*)&SD1, "Flash size %dkb\r\n", *DES_FSIZE);
-    chprintf((BaseSequentialStream*)&SD1, "Unique device ID %.8x %.8x %.8x\r\n", U_ID[0], U_ID[1], U_ID[2]);
+    shellcmdInit();
 
     palClearPad(IOPORT2, GPIOB_LED1);
 

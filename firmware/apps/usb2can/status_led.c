@@ -3,13 +3,13 @@
 
 static VirtualTimer vt1, vt2;
 
-static ledoff_1(void* p)
+static void ledoff_1(void* p)
 {
     (void)p;
     palClearPad(IOPORT2, GPIOB_LED1);
 }
 
-static ledoff_2(void* p)
+static void ledoff_2(void* p)
 {
     (void)p;
     palClearPad(IOPORT2, GPIOB_LED2);

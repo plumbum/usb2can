@@ -86,6 +86,7 @@ CSRC = $(PORTSRC) \
        $(CHIBIOS)/os/various/shell.c \
        $(CHIBIOS)/os/various/chprintf.c \
 	   status_led.c \
+	   shell_cmd.c \
        main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global

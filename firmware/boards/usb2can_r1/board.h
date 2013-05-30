@@ -21,6 +21,9 @@
  * Setup for the Olimex STM32-P103 proto board.
  */
 
+#define DES_FSIZE ((uint16_t*)0x1FFFF7E0)
+#define U_ID      ((uint32_t*)0x1FFFF7E8)
+
 /*
  * Board identifier.
  */
