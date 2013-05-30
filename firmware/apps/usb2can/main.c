@@ -1,6 +1,7 @@
 #include <ch.h>
 #include <hal.h>
 
+#include <chprintf.h>
 
 #define DES_FSIZE ((uint16_t*)0x1FFFF7E0)
 #define U_ID      ((uint32_t*)0x1FFFF7E8)
