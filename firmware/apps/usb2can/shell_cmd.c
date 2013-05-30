@@ -2,8 +2,8 @@
 
 #include <hal.h>
 
-#include <shell.h>
 #include <chprintf.h>
+#include "shell.h"
 
 #define SHELL_WA_SIZE   THD_WA_SIZE(2048)
 
