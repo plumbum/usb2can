@@ -2,6 +2,7 @@
 #include <hal.h>
 
 #include <chprintf.h>
+#include "status_led.h"
 
 #define DES_FSIZE ((uint16_t*)0x1FFFF7E0)
 #define U_ID      ((uint32_t*)0x1FFFF7E8)
@@ -29,10 +30,9 @@ int main(void)
 
     while (TRUE)
     {
-        palSetPad(IOPORT2, GPIOB_LED2);
-        chThdSleepMilliseconds(50);
-        palClearPad(IOPORT2, GPIOB_LED2);
-        chThdSleepMilliseconds(950);
+        statusLedPulse(1, MS2ST(50));
+        statusLedPulse(2, MS2ST(250));
+        chThdSleepMilliseconds(1000);
     }
     return 0;
 }
