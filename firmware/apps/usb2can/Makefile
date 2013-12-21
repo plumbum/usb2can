@@ -88,10 +88,12 @@ CSRC = $(PORTSRC) \
 	   status_led.c \
 	   shell_cmd.c \
        main.c
+	   # contrib/24aa.c \
+	   # contrib/eeprom.c \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CPPSRC =
+CPPSRC = cityhash/city.cpp
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
@@ -118,7 +120,8 @@ ASMSRC = $(PORTASM)
 
 INCDIR = $(PORTINC) $(KERNINC) $(TESTINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) \
-         $(CHIBIOS)/os/various
+         $(CHIBIOS)/os/various \
+		 cityhash
 
 #
 # Project, sources and paths
