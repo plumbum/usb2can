@@ -1,6 +1,7 @@
 #include "uart_protocol.h"
 #include <hal.h>
 
+// TODO use void canSTM32SetFilters(uint32_t can2sb, uint32_t num, const CANFilter *cfp);
 
 const SerialConfig sc = {
     115200,
