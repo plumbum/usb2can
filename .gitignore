@@ -28,6 +28,7 @@
 *.eep
 .deps
 *.log
+tags
 
 # VIM
 .*.swp
