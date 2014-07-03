@@ -46,7 +46,7 @@ uart_proto_pkg_reset:
                 // Is standart block
                 sdPut(&SD_UP, 0xAB);
                 /// Put  flags & lenght
-                sdPut(&SD_UP, (rxmsg.DLC & 0x0F) | (rxmsg.RTR == CAN_RTR_REMOTE)?(1<<4):0);
+                sdPut(&SD_UP, (rxmsg.DLC & 0x0F) | ((rxmsg.RTR == CAN_RTR_REMOTE)?(1<<4):0));
                 // Put command ID
                 sdPut(&SD_UP, rxmsg.SID & 0xFF);
                 sdPut(&SD_UP, (rxmsg.SID>>8) & 0xFF);
@@ -54,7 +54,7 @@ uart_proto_pkg_reset:
                 // Is extended block
                 sdPut(&SD_UP, 0xAE);
                 /// Put  flags & lenght
-                sdPut(&SD_UP, (rxmsg.DLC & 0x0F) | (rxmsg.RTR == CAN_RTR_REMOTE)?(1<<4):0);
+                sdPut(&SD_UP, (rxmsg.DLC & 0x0F) | ((rxmsg.RTR == CAN_RTR_REMOTE)?(1<<4):0));
                 // Put command ID
                 sdPut(&SD_UP, rxmsg.EID & 0xFF);
                 sdPut(&SD_UP, (rxmsg.EID>>8) & 0xFF);
@@ -102,7 +102,7 @@ uart_proto_pkg_reset:
                         c = sdGetMacro(); if(c<0) continue;
                         txmsg.EID |= (c<<16);
                         c = sdGetMacro(); if(c<0) continue;
-                        txmsg.EID |= (c<<14);
+                        txmsg.EID |= (c<<24);
                         break;
                 }
 

@@ -29,7 +29,7 @@ openocd:
 	$(OPENOCD) $(OPENOCD_IFACE)
 
 stlink:
-	st-util -p 3333
+	st-util -m -p 3333
 
 load: $(PROJECT).elf
 	$(GDB) -x ${COMMON}/fw_load.gdb $<
