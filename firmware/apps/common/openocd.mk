@@ -31,14 +31,14 @@ openocd:
 stlink:
 	st-util -m -p 3333
 
-load: $(PROJECT).elf
+load: build/$(PROJECT).elf
 	$(GDB) -x ${COMMON}/fw_load.gdb $<
 
-stload: $(PROJECT).elf
+stload: build/$(PROJECT).elf
 	@echo Usage: 'load', 'break main', 'run', 'continue'
 	$(GDB) -x ${COMMON}/fw_stload.gdb $<
 
-prog program: $(OPENOCD_LOADFILE)
+program: $(OPENOCD_LOADFILE)
 	@echo "Programming with OPENOCD"
 	$(OPENOCD) $(OPENOCD_CMD)
 
