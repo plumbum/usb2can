@@ -8,7 +8,7 @@
             // Make this the default build command.
             "isBuildCommand": true,
             // Show the output window only if unrecognized errors occur.
-            "showOutput": "silent", // always
+            "showOutput": "silent", // always, silent
             // No args
             "args": ["all"],
             // Use the standard less compilation problem matcher.
@@ -26,13 +26,13 @@
             }
         },
         {
-            "taskName": "load",
+            "taskName": "upload",
             // Make this the default build command.
             "isBuildCommand": true,
             // Show the output window only if unrecognized errors occur.
             "showOutput": "silent",
             // No args
-            "args": ["load"],
+            "args": ["upload"],
             // Use the standard less compilation problem matcher.
             "problemMatcher": {
                 "owner": "cpp",
