@@ -1,11 +1,30 @@
+SUBMAKE=make -C apps/serial2can 
 all:
-	make -C apps/serial2can all
+	$(SUBMAKE) all
 
 clean:
-	make -C apps/serial2can clean
+	$(SUBMAKE) clean
 
 load:
-	make -C apps/serial2can load
+	$(SUBMAKE) load
 
-.PHONY: clean load
+upload:
+	$(SUBMAKE) upload
+
+lock:
+	$(SUBMAKE) lock
+
+unlock:
+	$(SUBMAKE) unlock
+
+reset:
+	$(SUBMAKE) reset
+
+debug:
+	$(SUBMAKE) debug
+
+openocd:
+	$(SUBMAKE) openocd
+
+.PHONY: clean load upload lock unlock reset debug openocd
 
