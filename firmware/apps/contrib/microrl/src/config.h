@@ -65,7 +65,7 @@ If not defined, use my own u16int_to_str variant, it's save about 800 byte of co
 on AVR (avr-gcc build).
 Try to build with and without, and compare total code size for tune library.
 */
-#define _USE_LIBC_STDIO
+// #define _USE_LIBC_STDIO
 
 /*
 Enable 'interrupt signal' callback, if user press Ctrl+C */
@@ -80,7 +80,7 @@ already initialize and ready to print message */
 
 /*
 New line symbol */
-#define _ENDL_LF
+#define _ENDL_CR
 
 #if defined(_ENDL_CR)
 #define ENDL "\r"
