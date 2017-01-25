@@ -61,7 +61,7 @@ reset:
 tags: 
 	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . ${CHIBIOS}/os ${BOARDINC}
 
-.PHONY: tags openocd debug upload stlink stload
+.PHONY: tags openocd debug upload stlink stload reset
 
 stlink:
 	st-util -m -p 3333
