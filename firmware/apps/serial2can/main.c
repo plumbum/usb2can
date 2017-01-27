@@ -20,36 +20,34 @@
 #include <string.h>
 
 #include "chprintf.h"
-#include "shell.h"
-
-#include "microrl.h"
-
 /*
  * Internal loopback mode, 500KBaud, automatic wakeup, automatic recover
  * from abort mode.
  * See section 22.7.7 on the STM32 reference manual.
  */
 static const CANConfig cancfg = {
-  CAN_MCR_ABOM | CAN_MCR_AWUM | CAN_MCR_TXFP,
-  CAN_BTR_LBKM | CAN_BTR_SJW(0) | CAN_BTR_TS2(1) |
-  CAN_BTR_TS1(8) | CAN_BTR_BRP(6)
-};
+    CAN_MCR_ABOM | CAN_MCR_AWUM | CAN_MCR_TXFP,
+    CAN_BTR_LBKM | CAN_BTR_SJW(0) | CAN_BTR_TS2(1) |
+        CAN_BTR_TS1(8) | CAN_BTR_BRP(6)};
 
 /*
  * Receiver thread.
  */
 static THD_WORKING_AREA(can_rx_wa, 256);
-static THD_FUNCTION(can_rx, p) {
+static THD_FUNCTION(can_rx, p)
+{
   event_listener_t el;
   CANRxFrame rxmsg;
 
   (void)p;
   chRegSetThreadName("receiver");
   chEvtRegister(&CAND1.rxfull_event, &el, 0);
-  while(!chThdShouldTerminateX()) {
+  while (!chThdShouldTerminateX())
+  {
     if (chEvtWaitAnyTimeout(ALL_EVENTS, MS2ST(100)) == 0)
       continue;
-    while (canReceive(&CAND1, CAN_ANY_MAILBOX, &rxmsg, TIME_IMMEDIATE) == MSG_OK) {
+    while (canReceive(&CAND1, CAN_ANY_MAILBOX, &rxmsg, TIME_IMMEDIATE) == MSG_OK)
+    {
       /* Process message.*/
       ToggleLed1();
     }
@@ -61,7 +59,8 @@ static THD_FUNCTION(can_rx, p) {
  * Transmitter thread.
  */
 static THD_WORKING_AREA(can_tx_wa, 256);
-static THD_FUNCTION(can_tx, p) {
+static THD_FUNCTION(can_tx, p)
+{
   CANTxFrame txmsg;
 
   (void)p;
@@ -73,7 +72,8 @@ static THD_FUNCTION(can_tx, p) {
   txmsg.data32[0] = 0x55AA55AA;
   txmsg.data32[1] = 0x00FF00FF;
 
-  while (!chThdShouldTerminateX()) {
+  while (!chThdShouldTerminateX())
+  {
     canTransmit(&CAND1, CAN_ANY_MAILBOX, &txmsg, MS2ST(100));
     chThdSleepMilliseconds(500);
   }
@@ -81,14 +81,17 @@ static THD_FUNCTION(can_tx, p) {
 
 /* Shell on serial */
 
-#define SHELL_WA_SIZE   THD_WORKING_AREA_SIZE(2048)
-#define TEST_WA_SIZE    THD_WORKING_AREA_SIZE(256)
+/*
+#define SHELL_WA_SIZE THD_WORKING_AREA_SIZE(2048)
+#define TEST_WA_SIZE THD_WORKING_AREA_SIZE(256)
 
-static void cmd_mem(BaseSequentialStream *chp, int argc, char *argv[]) {
+static void cmd_mem(BaseSequentialStream *chp, int argc, char *argv[])
+{
   size_t n, size;
 
   (void)argv;
-  if (argc > 0) {
+  if (argc > 0)
+  {
     chprintf(chp, "Usage: mem\r\n");
     return;
   }
@@ -98,31 +101,36 @@ static void cmd_mem(BaseSequentialStream *chp, int argc, char *argv[]) {
   chprintf(chp, "heap free total  : %u bytes\r\n", size);
 }
 
-static void cmd_threads(BaseSequentialStream *chp, int argc, char *argv[]) {
+static void cmd_threads(BaseSequentialStream *chp, int argc, char *argv[])
+{
   static const char *states[] = {CH_STATE_NAMES};
   thread_t *tp;
 
   (void)argv;
-  if (argc > 0) {
+  if (argc > 0)
+  {
     chprintf(chp, "Usage: threads\r\n");
     return;
   }
   chprintf(chp, "    addr    stack prio refs     state time\r\n");
   tp = chRegFirstThread();
-  do {
+  do
+  {
     chprintf(chp, "%08lx %08lx %4lu %4lu %9s\r\n",
-            (uint32_t)tp, (uint32_t)tp->p_ctx.r13,
-            (uint32_t)tp->p_prio, (uint32_t)(tp->p_refs - 1),
-            states[tp->p_state]);
+             (uint32_t)tp, (uint32_t)tp->p_ctx.r13,
+             (uint32_t)tp->p_prio, (uint32_t)(tp->p_refs - 1),
+             states[tp->p_state]);
     tp = chRegNextThread(tp);
   } while (tp != NULL);
 }
 
-static void cmd_test(BaseSequentialStream *chp, int argc, char *argv[]) {
+static void cmd_test(BaseSequentialStream *chp, int argc, char *argv[])
+{
   thread_t *tp;
 
   (void)argv;
-  if (argc > 0) {
+  if (argc > 0)
+  {
     chprintf(chp, "Usage: test\r\n");
     return;
   }
@@ -130,44 +138,46 @@ static void cmd_test(BaseSequentialStream *chp, int argc, char *argv[]) {
 }
 
 static const ShellCommand commands[] = {
-  {"mem", cmd_mem},
-  {"threads", cmd_threads},
-  {"test", cmd_test},
-  {NULL, NULL}
-};
+    {"mem", cmd_mem},
+    {"threads", cmd_threads},
+    {"test", cmd_test},
+    {NULL, NULL}};
 
 static const ShellConfig shell_cfg1 = {
-  (BaseSequentialStream *)&SD1,
-  commands
-};
+    (BaseSequentialStream *)&SD1,
+    commands};
 
 microrl_t rl;
-microrl_t * prl = &rl;
+microrl_t *prl = &rl;
 
-
-void print (const char * str)
+void print(const char *str)
 {
   sdWrite(&SD1, str, strlen(str));
 }
 
-int execute (int argc, const char * const * argv)
+int execute(int argc, const char *const *argv)
 {
   int i;
-  for(i=0; i<argc; i++) {
+  for (i = 0; i < argc; i++)
+  {
     chprintf(&SD1, "%d: %s\r\n", i, argv[i]);
   }
 }
 
-void sigint (void)
+void sigint(void)
 {
-	chprintf(&SD1, "^C catched!\r\n");
+  chprintf(&SD1, "^C catched!\r\n");
 }
+*/
+
+
 /*
  * Application entry point.
  */
-int main(void) {
+int main(void)
+{
 
-  thread_t *shelltp = NULL;
+  // thread_t *shelltp = NULL;
 
   /*
    * System initializations.
@@ -196,11 +206,7 @@ int main(void) {
   chThdCreateStatic(can_rx_wa, sizeof(can_rx_wa), NORMALPRIO + 7, can_rx, NULL);
   chThdCreateStatic(can_tx_wa, sizeof(can_tx_wa), NORMALPRIO + 7, can_tx, NULL);
 
-
   /*
-   * Normal main() thread activity, in this demo it does nothing.
-   */
-
   // call init with ptr to microrl instance and print callback
   chprintf(&SD1, "Init shell\r\n");
 	microrl_init (prl, print);
@@ -215,17 +221,22 @@ int main(void) {
 	// set callback for Ctrl+C
   chprintf(&SD1, "Set SIGINT callback\r\n");
 	microrl_set_sigint_callback (prl, sigint);
-
   chprintf(&SD1, "Wait commands\r\n");
-	while (1) {
+  */
+
+  while (1)
+  {
+    /*
     char c;
     size_t ok = sdRead(&SD1, &c, 1);
-		// put received char from stdin to microrl lib
-    if (ok > 0) {
+    // put received char from stdin to microrl lib
+    if (ok > 0)
+    {
       microrl_insert_char(prl, (int)c);
     }
     // chThdSleepMilliseconds(500);
-	}
+    */
+  }
 
   return 0;
 }
