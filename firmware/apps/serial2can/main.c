@@ -20,6 +20,9 @@
 #include <string.h>
 
 #include "chprintf.h"
+
+#include "canshell.h"
+
 /*
  * Internal loopback mode, 500KBaud, automatic wakeup, automatic recover
  * from abort mode.
@@ -224,6 +227,9 @@ int main(void)
   chprintf(&SD1, "Wait commands\r\n");
   */
 
+  chprintf(&SD1, "Wait commands\r\n");
+  canshellInit(&SD1);
+
   while (1)
   {
     /*
@@ -236,6 +242,7 @@ int main(void)
     }
     // chThdSleepMilliseconds(500);
     */
+    chThdSleepMilliseconds(500);
   }
 
   return 0;

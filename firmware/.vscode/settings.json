@@ -8,4 +8,6 @@
         "**/.dep": true,
         "**/build": true
     }
+,
+"files.associations": {}
 }
